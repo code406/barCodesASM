@@ -31,12 +31,12 @@ _createBarCode PROC FAR
     ; ProductCode
     MOV AX, [BP+10]              ;; DX:AX = ProductCode
     MOV DX, [BP+12]              ;; DX puede ser 0 o 1
+    MOV CX, 10
     DEC SI                       ;; Bucle: separa digitos y convierte a ASCII
     JMP NO_LIMPIAR               ;; Evita limpiar DX en la primera vuelta
 SEPARA_PROD:                     ;; ASCII y lo escribe en la cadena
     XOR DX, DX                   ;; Limpiar DX porque DIV guarda resto en el
     NO_LIMPIAR:
-    MOV CX, 10
     DIV CX                       ;; DX = Resto de dividir AX / 10
     ADD DL, 48                   ;; Convierte el resto a ASCII
     MOV DS:[BX][SI], DL          ;; Colocar resto en cadena[11,10,9,8,7]
@@ -48,7 +48,6 @@ SEPARA_PROD:                     ;; ASCII y lo escribe en la cadena
     MOV AX, [BP+8]               ;; AX = countryCode
 SEPARA_COUNTRY:                  ;; Bucle: separa digitos y convierte a ASCII
     XOR DX, DX                   ;; Limpiar DX porque DIV guarda resto en el
-    MOV CX, 10
     DIV CX                       ;; DX = Resto de dividir AX / 10
     ADD DL, 48                   ;; Convierte el resto a ASCII
     MOV DS:[BX][SI], DL          ;; Colocar resto en cadena[6,5,4,3]
@@ -60,7 +59,6 @@ SEPARA_COUNTRY:                  ;; Bucle: separa digitos y convierte a ASCII
     MOV AX, [BP+6]               ;; AX = companyCode
 SEPARA_COMP:                     ;; Bucle: separa digitos y convierte a ASCII
     XOR DX, DX                   ;; Limpiar DX porque DIV guarda resto en el
-    MOV CX, 10
     DIV CX                       ;; DX = Resto de dividir AX / 10
     ADD DL, 48                   ;; Convierte el resto a ASCII
     MOV DS:[BX][SI], DL          ;; Colocar resto en cadena[2,1,0]
